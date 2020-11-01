@@ -126,6 +126,8 @@ public class Stage2GameManager : GameManagerBase
     public GameObject[] buttonBumboos = new GameObject[6];    //竹
     public GameObject[] buttonBeakers = new GameObject[3];    //ビーカー
     public GameObject[] buttonPrison  = new GameObject[18];   //牢屋の鍵
+    //ビーカーが選択されているとき
+    public GameObject[] imageBeakerSelected = new GameObject[3];
 
     //イラストの種類
     public Sprite[] imageLine     = new Sprite[2];
@@ -650,7 +652,9 @@ void Start()
     public void PushSomeIcon(Sprite someItem)
     {
         ImageSelectedItem.GetComponent<Image>().sprite = someItem;
+        ImageSelectedItemLarge.GetComponent<Image>().sprite = someItem;
         ImageSelectedItem.SetActive(true);
+        ButtonSelectedItemLarge.SetActive(true);
     }
 
     //次のステージへのボタン
@@ -662,8 +666,8 @@ void Start()
         SceneManager.LoadScene("GameScene_stage3");
     }
 
-    //タイトルに戻るボタン
-    public void PushButtonReturnTitleFromStage1()
+    //クリアしてタイトルに戻るボタン
+    public void PushButtonReturnTitleFromStage2()
     {
         PlayerPrefs.SetInt("STAGECLEAR", 2);
         PlayerPrefs.SetInt("SWORD2", doesHaveSword);
@@ -921,12 +925,33 @@ void Start()
                 numberBeaker[beakerSelected[0]] = 0;
             }
 
-            //  ビーカーの絵の差し替え
+            //選択の解除
+            for (int i = 0; i < 3; i++)
+            {
+                imageBeakerSelected[i].SetActive(false);
+            }
+            //ビーカーの絵の差し替え
             buttonBeakers[0].GetComponent<Image>().sprite = imageBeaker10[numberBeaker[0]];
             buttonBeakers[1].GetComponent<Image>().sprite = imageBeaker7[numberBeaker[1]];
             buttonBeakers[2].GetComponent<Image>().sprite = imageBeaker3[numberBeaker[2]];
+
+        }
+        else
+        {
+            if(beakerNo == 0)
+            {
+                imageBeakerSelected[0].SetActive(true);
+            }else if(beakerNo == 1)
+            {
+                imageBeakerSelected[1].SetActive(true);
+            }
+            else
+            {
+                imageBeakerSelected[2].SetActive(true);
+            }
         }
         beakerManage = (beakerManage + 1) % 2;
+
     }
 
     //水の間のビーカーのボタンを非アクティブにする
@@ -1010,6 +1035,7 @@ void Start()
                 DisabledButtonCandles();
                 ChangeArrowActive(0, ButtonLeft);
                 ChangeArrowActive(0, ButtonRight);
+                ButtonMatch.SetActive(false);
 
                 ButtonOrbFireIcon.SetActive(true);
                 ButtonOrbFire.SetActive(true);
@@ -1063,6 +1089,8 @@ void Start()
                 DisabledButton1(buttonItem);
                 DisabledButtonBeakers();
                 DisabledButton1(GameObject.Find("ButtonBackPanelCaveWater1"));
+                ButtonWateringCan.SetActive(false);
+                ButtonKey.SetActive(false);
 
                 ButtonOrbWaterIcon.SetActive(true);
                 ButtonOrbWater.SetActive(true);

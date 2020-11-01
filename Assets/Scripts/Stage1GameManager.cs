@@ -309,7 +309,9 @@ public class Stage1GameManager : GameManagerBase
         }
         else {
             ImageSelectedItem.GetComponent<Image>().sprite = someItem;
+            ImageSelectedItemLarge.GetComponent<Image>().sprite = someItem;
             ImageSelectedItem.SetActive(true);
+            ButtonSelectedItemLarge.SetActive(true);
         }
     }
 

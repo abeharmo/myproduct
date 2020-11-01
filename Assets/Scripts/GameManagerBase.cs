@@ -29,7 +29,9 @@ public class GameManagerBase : MonoBehaviour
     //次のステージ移動するか選択させるパネル
     public GameObject PanelSelectStayOrMove;
     //選択したアイテムを表示するアイコン
-    public GameObject ImageSelectedItem;
+    public GameObject ImageSelectedItem;         //左上
+    public GameObject ButtonSelectedItemLarge;  //真ん中拡大
+    public GameObject ImageSelectedItemLarge;
 
     //自分が今いるパネル
     protected int wallNow;
@@ -164,6 +166,11 @@ public class GameManagerBase : MonoBehaviour
         panelItem.SetActive(false);
     }
 
+    //アイテム画面のアイテム拡大表示を消す処理
+    public void PushSomeItemLarge()
+    {
+        ButtonSelectedItemLarge.SetActive(false);
+    }
 
     //ゲームに戻るボタンを押した処理
     public void PushButtonReturnGame()
