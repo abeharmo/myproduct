@@ -30,8 +30,8 @@ public class GameManagerBase : MonoBehaviour
     public GameObject PanelSelectStayOrMove;
     //選択したアイテムを表示するアイコン
     public GameObject ImageSelectedItem;         //左上
-    public GameObject ButtonSelectedItemLarge;  //真ん中拡大
-    public GameObject ImageSelectedItemLarge;
+    public GameObject ButtonSelectedItemLarge;  //ボタン：真ん中拡大
+    public GameObject ImageSelectedItemLarge;   //画像：真ん中拡大
 
     //自分が今いるパネル
     protected int wallNow;
@@ -56,12 +56,6 @@ public class GameManagerBase : MonoBehaviour
 
         panelItem.SetActive(false);
         BackPanelWall(wallNow);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     //左矢印を押したときの処理
