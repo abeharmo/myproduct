@@ -47,6 +47,17 @@ public class GameManagerBase : MonoBehaviour
     //アイテムが何もないアイテムアイコン
     public Sprite imageIcon;
 
+    // 効果音
+    public AudioClip changePanelSE;                   //効果音：パネルを移動
+    public AudioClip itemButtonSE;                    //効果音：アイテムボタンを押したとき
+    public AudioClip changeMysteryObjectSE;           //効果音：謎のオブジェクト（数字、英語、記号）を切り替える
+    public AudioClip messageSE;                       //効果音：メッセージ表示
+    public AudioClip alertSE;                         //効果音：警告音
+    public AudioClip cancelSE;                        //効果音：戻る、キャンセルボタンを押した時
+    public AudioClip saveSE;                          //効果音：セーブ時
+
+    protected AudioSource audioSource;
+
     // Start is called before the first frame update
     public void Start()
     {
@@ -56,6 +67,10 @@ public class GameManagerBase : MonoBehaviour
 
         panelItem.SetActive(false);
         BackPanelWall(wallNow);
+
+        //audioSourceの取得
+        audioSource = gameObject.GetComponent<AudioSource>();
+        
     }
 
     //左矢印を押したときの処理
@@ -63,6 +78,7 @@ public class GameManagerBase : MonoBehaviour
     {
         wallNow--;
         wallNow = (wallNow + 4) % 4;
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallBase();
     }
 
@@ -71,6 +87,7 @@ public class GameManagerBase : MonoBehaviour
     {
         wallNow++;
         wallNow = wallNow % 4;
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallBase();
     }
 
@@ -144,6 +161,7 @@ public class GameManagerBase : MonoBehaviour
     public void DisplayMessage(string message)
     {
         buttonMessage.SetActive(true);
+        audioSource.PlayOneShot(messageSE);
         buttonMessageText.GetComponent<Text>().text = message;
     }
 
@@ -151,6 +169,7 @@ public class GameManagerBase : MonoBehaviour
     public void PushButtonItem()
     {
         DeleteMessage();
+        audioSource.PlayOneShot(itemButtonSE);
         panelItem.SetActive(true);
     }
 
@@ -171,6 +190,7 @@ public class GameManagerBase : MonoBehaviour
     {
         ImageSelectedItem.SetActive(false);
         ImageSelectedItem.GetComponent<Image>().sprite = imageIcon;
+        audioSource.PlayOneShot(cancelSE);
         ExitItem();
     }
 
@@ -178,15 +198,17 @@ public class GameManagerBase : MonoBehaviour
     public void PushButtonReturnTitle()
     {
         PanelDispYesOrNo.SetActive(true);
+        audioSource.PlayOneShot(cancelSE);
     }
 
     //タイトルに戻るボタンを押したあとに「はい」のボタンを押したら
     public void PushButtonReturnTitleYes()
     {
         ImageSelectedItem.GetComponent<Image>().sprite = imageIcon;
-        ExitItem();;
+        ExitItem();
         ImageSelectedItem.SetActive(false);
         PanelDispYesOrNo.SetActive(false);
+        audioSource.PlayOneShot(cancelSE);
         SceneManager.LoadScene("TitleScene");
     }
 
@@ -194,6 +216,7 @@ public class GameManagerBase : MonoBehaviour
     public void PushButtonReturnTitleNo()
     {
         PanelDispYesOrNo.SetActive(false);
+        audioSource.PlayOneShot(cancelSE);
     }
 
     //ボタンの無効化(半透明化)
@@ -229,6 +252,7 @@ public class GameManagerBase : MonoBehaviour
     public void SelectStayOrMove()
     {
         PanelSelectStayOrMove.SetActive(true);
+        audioSource.PlayOneShot(alertSE);
     }
 
     //ステージクリア画面に移動する「はい」のボタンを押したら
@@ -237,6 +261,7 @@ public class GameManagerBase : MonoBehaviour
         PanelSelectStayOrMove.SetActive(false);
         buttonItem.SetActive(false);
         GameObject.Find("CanvasChangePanelWalls").SetActive(false);
+        audioSource.PlayOneShot(changePanelSE);
         panelWalls.transform.localPosition = new Vector3(-4000.0f, 0.0f, 0.0f);
     }
 
@@ -244,6 +269,7 @@ public class GameManagerBase : MonoBehaviour
     public void PushButtonSelectStay()
     {
         PanelSelectStayOrMove.SetActive(false);
+        audioSource.PlayOneShot(cancelSE);
     }
 
 }

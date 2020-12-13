@@ -81,6 +81,14 @@ public class Stage3GameManager : GameManagerBase
     public GameObject buttonAnswer2;
     public GameObject buttonAnswer3;
 
+    // 効果音
+    public AudioClip completeSE;                    //効果音：フラグメッセージの出現
+    public AudioClip openBoxSE;                     //効果音：箱が開く
+    public AudioClip openKeySE;                     //効果音：鍵が開く
+    public AudioClip openDoorSE;                    //効果音；壁が開く
+    public AudioClip breakWallSE;                   //効果音：壁の破壊
+    public AudioClip prisonSE;                      //効果音：牢屋ガシャガシャ
+
     //謎のボタンの値を管理する数字
     private int[] numberAlphabets1 = new int[3];
     private int[] numberAlphabets2 = new int[4];
@@ -212,15 +220,18 @@ void Start()
         if (doesHaveSword == 1)
         {
             DisplayFlagMessage("おー！信じてたぞ、剣を見つけてくれて本当に助かった！！");
+            audioSource.PlayOneShot(completeSE);
         }
         else if (doesSaveBraveMan == true)
         {
             DisplayFlagMessage("恩にきる！もしよかったら一緒に剣も探してくれると助かる。");
+            audioSource.PlayOneShot(completeSE);
         }
         else
         {
             DisplayMessage("助けてくれ！下手こいて捕まっちまった。" +
                            "ここから出してくれれば魔王を倒すの手伝うぞ！");
+            audioSource.PlayOneShot(prisonSE);
         }
 
     }
@@ -231,6 +242,8 @@ void Start()
         if (doesHaveHammer)
         {
             DisplayMessage("壁をハンマーで叩くと中から剣が出てきた。");
+            audioSource.PlayOneShot(breakWallSE);
+
             ImageMagicArray.GetComponent<Image>().sprite = imageMagicArrayBroken;
             DisabledButton2(ButtonMagicArray);
             ChangeArrowActive(0, ButtonLeft);
@@ -306,6 +319,7 @@ void Start()
             ChangeArrowActive(0, ButtonLeft);
             ChangeArrowActive(0, ButtonRight);
         }
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallExtended();
     }
 
@@ -345,6 +359,7 @@ void Start()
         PlayerPrefs.SetInt("STAGECLEAR", 3);
         PlayerPrefs.SetInt("SWORD3", doesHaveSword);
         PlayerPrefs.Save();
+        audioSource.PlayOneShot(saveSE);
         SceneManager.LoadScene("EndingScene");
     }
 
@@ -354,6 +369,7 @@ void Start()
         PlayerPrefs.SetInt("STAGECLEAR", 3);
         PlayerPrefs.SetInt("SWORD3", doesHaveSword);
         PlayerPrefs.Save();
+        audioSource.PlayOneShot(saveSE);
         SceneManager.LoadScene("TitleScene");
     }
 
@@ -468,6 +484,7 @@ void Start()
         int numberKind = int.Parse(buttonNumbers[buttonNo].GetComponentInChildren<Text>().text);
         string numberString = ((numberKind + 1) % 5).ToString("0");
         buttonNumbers[buttonNo].GetComponentInChildren<Text>().text = numberString;
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //扉謎1のアルファベットの変更の処理
@@ -476,6 +493,7 @@ void Start()
         numberAlphabets1[buttonNo] = (numberAlphabets1[buttonNo] + 1) % 26;
         buttonAlphabets1[buttonNo].GetComponentInChildren<Text>().text = alphabets[numberAlphabets1[buttonNo]];
         textAlphabet1[buttonNo].GetComponent<Text>().text = alphabets[numberAlphabets1[buttonNo]];
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //扉謎2のアルファベットの変更の処理
@@ -484,6 +502,7 @@ void Start()
         numberAlphabets2[buttonNo] = (numberAlphabets2[buttonNo] + 1) % 26;
         buttonAlphabets2[buttonNo].GetComponentInChildren<Text>().text = alphabets[numberAlphabets2[buttonNo]];
         textAlphabet2[buttonNo].GetComponent<Text>().text = alphabets[numberAlphabets2[buttonNo]];
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
     //扉謎3のアルファベットの変更の処理
     void ChangeAlphabet3(int buttonNo)
@@ -491,12 +510,14 @@ void Start()
         numberAlphabets3[buttonNo] = (numberAlphabets3[buttonNo] + 1) % 26;
         buttonAlphabets3[buttonNo].GetComponentInChildren<Text>().text = alphabets[numberAlphabets3[buttonNo]];
         textAlphabet3[buttonNo].GetComponent<Text>().text = alphabets[numberAlphabets3[buttonNo]];
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
     //牢屋の鍵の謎のアルファベットの変更の処理
     void ChangeAlphabet4(int buttonNo)
     {
         numberAlphabets4[buttonNo] = (numberAlphabets4[buttonNo] + 1) % 26;
         buttonAlphabets4[buttonNo].GetComponentInChildren<Text>().text = alphabets[numberAlphabets4[buttonNo]];
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //白い箱の謎の答えのチェック
@@ -513,6 +534,7 @@ void Start()
             if (doesOpenBox == false)
             {
                 DisplayMessage("「カシャ」と音がして箱が開いた。中には本が入っていた。");
+                audioSource.PlayOneShot(openBoxSE);
 
                 GameObject.Find("ButtonBox").GetComponent<Image>().sprite = imageBoxOpen;
                 DisabledButton1(buttonItem);
@@ -537,6 +559,7 @@ void Start()
             {
                 DisplayMessage("扉が横にずれて次の部屋への道が現れた。");
                 GameObject ButtonFirstDoor = GameObject.Find("ButtonFirstDoor");
+                audioSource.PlayOneShot(openDoorSE);
 
                 DisabledButton2(GameObject.Find("ButtonMystery1"));
                 ButtonAllDisabledPush(buttonAlphabets1);
@@ -559,6 +582,7 @@ void Start()
             {
                 DisplayMessage("扉が横にずれて次の部屋への道が現れた。");
                 GameObject ButtonSecondDoor = GameObject.Find("ButtonSecondDoor");
+                audioSource.PlayOneShot(openDoorSE);
 
                 DisabledButton2(GameObject.Find("ButtonMystery2"));
                 ButtonAllDisabledPush(buttonAlphabets2);
@@ -581,6 +605,7 @@ void Start()
             {
                 DisplayMessage("扉が横にずれて次の部屋への道が現れた。");
                 GameObject ButtonThirdDoor = GameObject.Find("ButtonThirdDoor");
+                audioSource.PlayOneShot(openDoorSE);
 
                 DisabledButton2(GameObject.Find("ButtonMystery3"));
                 ButtonAllDisabledPush(buttonAlphabets3);
@@ -601,6 +626,7 @@ void Start()
             if (doesOpenPrison == false)
             {
                 DisplayMessage("「ガシャ」と音がして牢屋の鍵が開いた。");
+                audioSource.PlayOneShot(openKeySE);
 
                 GameObject.Find("ImagePrison").GetComponent<Image>().sprite = imagePrisonOpen;
                 GameObject.Find("ButtonPrisonRock").SetActive(false);

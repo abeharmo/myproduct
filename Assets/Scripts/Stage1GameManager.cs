@@ -153,6 +153,29 @@ public class Stage1GameManager : GameManagerBase
     private int candleManage;                       //ろうそくの火を灯した回数の管理
     private int[] orderManage = new int [6];        //ろうそくの火を灯した順番の管理
 
+    // 効果音
+    public AudioClip burnBookSE;                    //効果音：本が燃える
+    public AudioClip incorrectSE;                   //効果音：不正解
+    public AudioClip openKeySE;                     //効果音：鍵が開く
+    public AudioClip openDoorSE;                    //効果音；壁が開く
+    public AudioClip magicWindSE;                   //効果音：魔法陣から風が出ている
+    public AudioClip onFireSE;                      //効果音：火がつく
+    public AudioClip moveBeakerWaterSE;             //効果音：ビーカーの水を移す
+    public AudioClip prisonSE;                      //効果音：牢屋ガシャガシャ
+    public AudioClip breakStageSE;                  //効果音：魔法陣の台破壊
+    public AudioClip switchSE;                      //効果音：スイッチ押す
+    public AudioClip dropBallInWaterSE;             //効果音：球を水につける
+    public AudioClip dropPickelInWaterSE;           //効果音：ピッケルが泉に出現する
+    public AudioClip changeLightLineSE;             //効果音：石碑の明かりの切り替え
+    public AudioClip openBoxSE;                     //効果音：箱が開く
+    public AudioClip wateringSE;                    //効果音；じょうろで水を与える
+    public AudioClip growBumbooSE;                  //効果音：竹が伸びる音
+    public AudioClip setOrbSE;                      //効果音：オーブを設置
+    public AudioClip voiceLightSE;                  //効果音：光る
+    public AudioClip windStrongSE;                  //効果音：強風
+    public AudioClip fogSE;                         //効果音：霧
+    public AudioClip completeSE;                    //効果音：フラグメッセージの出現
+
     //アイテムの所持
     private bool doesHaveBalls;        //6個のボール     
     private bool doesHaveBook;         //本
@@ -221,6 +244,7 @@ void Start()
     {
         buttonFlagMessage.SetActive(true);
         buttonFlagMessageText.GetComponent<Text>().text = message;
+
     }
 
     //謎が解けなかったときのメッセージウィンドウを消す
@@ -234,6 +258,7 @@ void Start()
     {
         panelMissingMessage.SetActive(true);
         buttonMissingMessageText.GetComponent<Text>().text = message;
+        audioSource.PlayOneShot(messageSE);
     }
 
     //勇者を押したら
@@ -242,15 +267,18 @@ void Start()
         if (doesHaveSword == 1)
         {
             DisplayFlagMessage("剣まで見つけてくれたのか！君はとてもいい人だな。本当に感謝するよ！");
+            audioSource.PlayOneShot(completeSE);
         }
         else if (doesSaveBraveMan == true)
         {
             DisplayFlagMessage("助かったよ！どこかに持っていかれた剣も探さねば。");
+            audioSource.PlayOneShot(completeSE);
         }
         else
         {
             DisplayMessage("すまないが、ここから出るのを手伝ってくれないか？" +
                            "魔王の狡猾な罠にはまってしまった…。");
+            audioSource.PlayOneShot(prisonSE);
         }
 
     }
@@ -295,6 +323,7 @@ void Start()
     public void PushButtonBurnFire()
     {
         DisplayMessage("「火の魔術書」と書かれた本を焚火で燃やすと、数字が書かれた紙と灰を入手した。");
+        audioSource.PlayOneShot(burnBookSE);
         DisabledButton1(buttonItem);
         DisabledButton2(ButtonBurnFire);
         ChangeArrowActive(0, ButtonLeft);
@@ -312,6 +341,7 @@ void Start()
     public void PushButtonLake()
     {
         DisplayMessage("ボールを水につけるとボールに色が浮かび上がった。");
+        audioSource.PlayOneShot(dropBallInWaterSE);
         DisabledButton1(buttonItem);
         DisabledButton2(ButtonLake);
         DisabledButton2(GameObject.Find("ButtonClockBlue"));
@@ -330,6 +360,8 @@ void Start()
         if (doesHavePickel)
         {
             DisplayMessage("魔法陣の書かれた台をピッケルでたたき割ると剣が出てきた。台の破片は砂のように崩れて消えていった。");
+            audioSource.PlayOneShot(breakStageSE);
+
             imageAshFly.SetActive(false);
             imageBallsColorFly.SetActive(false);
             DisabledButton1(buttonItem);
@@ -346,6 +378,7 @@ void Start()
         else if (doesHaveAsh && !(doesFlyAsh)) 
         {
             DisplayMessage("灰を魔法陣の上に置くと灰が浮かび上がった。");
+            audioSource.PlayOneShot(magicWindSE);
             ButtonAshIcon.SetActive(false);
             ButtonAsh.SetActive(false);
             imageAshFly.SetActive(true);
@@ -354,6 +387,7 @@ void Start()
         else if (doesHaveBallsColor && !(doesFlyBallsColor))
         {
             DisplayMessage("色つきのボールを魔法陣の上に置くとボールが浮かび上がった。");
+            audioSource.PlayOneShot(magicWindSE);
             ButtonBallsColorIcon.SetActive(false);
             ButtonBallsColor.SetActive(false);
             imageBallsColorFly.SetActive(true);
@@ -362,6 +396,7 @@ void Start()
         else
         { 
             DisplayMessage("魔法陣の上に手をかざすと風を感じる。どうやら風を起こすための魔法陣のようだ。");
+            audioSource.PlayOneShot(magicWindSE);
         }
 
     }
@@ -372,6 +407,7 @@ void Start()
         if (doesHaveKey) 
         {
             DisplayMessage("金庫の鍵が開いた。");
+            audioSource.PlayOneShot(openKeySE);
             GameObject.Find("PanelValut").GetComponent<Image>().sprite = imageValutOpen;
             GameObject.Find("ButtonKeyHole").SetActive(false);
             ButtonKey.SetActive(false);
@@ -388,6 +424,7 @@ void Start()
     public void PushButtonSwitch()
     {
         DisplayMessage("どこかの台から何か出たようだ。");
+        audioSource.PlayOneShot(switchSE);
         DisabledButton2(ButtonSwitch);
 
         Beakers.SetActive(true);
@@ -404,6 +441,7 @@ void Start()
         else
         {
             DisplayMessage("じょうろで水をかけると竹が生えてきた。");
+            audioSource.PlayOneShot(wateringSE);
             DisabledButton2(GameObject.Find("ButtonGround"));
 
             Bumboos.SetActive(true);
@@ -416,18 +454,21 @@ void Start()
         if (doesHaveOrbWind && !(imageOrbWind.activeSelf))
         {
             DisplayMessage("緑のオーブを台座の丸いくぼみにはめた。");
+            audioSource.PlayOneShot(setOrbSE);
             DisabledButton1(ButtonOrbWind);
             imageOrbWind.SetActive(true);
         }
         else if (doesHaveOrbWater && !(imageOrbWater.activeSelf))
         {
             DisplayMessage("青のオーブを台座の丸いくぼみにはめた。");
+            audioSource.PlayOneShot(setOrbSE);
             DisabledButton1(ButtonOrbWater);
             imageOrbWater.SetActive(true);
         }
         else if (doesHaveOrbFire && !(imageOrbFire.activeSelf))
         {
             DisplayMessage("赤のオーブを台座の丸いくぼみにはめた。");
+            audioSource.PlayOneShot(setOrbSE);
             DisabledButton1(ButtonOrbFire);
             imageOrbFire.SetActive(true);
         }
@@ -439,6 +480,7 @@ void Start()
         if(imageOrbWind.activeSelf && imageOrbWater.activeSelf && imageOrbFire.activeSelf)
         {
             DisplayMessage("「ゴゴゴゴゴ……」と音を立てて、台座の後ろの壁が開いたようだ。");
+            audioSource.PlayOneShot(openDoorSE);
             DisabledButton2(GameObject.Find("ButtonStageOrb"));
             ImageCaveLoad4.SetActive(true);
             ButtonCaveLoad4.SetActive(true);
@@ -488,7 +530,8 @@ void Start()
         {
             UnityEngine.Debug.Log("PushLeftArrow Error");
         }
-
+        
+        audioSource.PlayOneShot(changePanelSE, 1.0F);
         DisplayWallExtended();
     }
 
@@ -519,7 +562,7 @@ void Start()
         {
             UnityEngine.Debug.Log("PushRightArrow Error");
         }
-
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallExtended();
     }
 
@@ -537,6 +580,7 @@ void Start()
             ChangeArrowActive(0, ButtonLeft);
             ChangeArrowActive(0, ButtonRight);
         }
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallExtended();
     }
     
@@ -663,6 +707,7 @@ void Start()
         PlayerPrefs.SetInt("STAGECLEAR", 1);
         PlayerPrefs.SetInt("SWORD1", doesHaveSword);
         PlayerPrefs.Save();
+        audioSource.PlayOneShot(saveSE);
         SceneManager.LoadScene("GameScene_stage2");
     }
 
@@ -672,6 +717,7 @@ void Start()
         PlayerPrefs.SetInt("STAGECLEAR", 1);
         PlayerPrefs.SetInt("SWORD1", doesHaveSword);
         PlayerPrefs.Save();
+        audioSource.PlayOneShot(saveSE);
         SceneManager.LoadScene("TitleScene");
     }
 
@@ -849,11 +895,13 @@ void Start()
         int numberKind = int.Parse(buttonNumbers[buttonNo].GetComponentInChildren<Text>().text);
         string numberString = ((numberKind + 1) % 10).ToString("0");
         buttonNumbers[buttonNo].GetComponentInChildren<Text>().text = numberString;
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //炎の間の謎2の解答のろうそくの火を灯す処理
     void ChangeCandleOn(int buttonNo)
     {
+        audioSource.PlayOneShot(onFireSE);
         numberCandle[buttonNo] = 1;
         orderManage[candleManage] = buttonNo;
         buttonCandles[buttonNo].GetComponent<Image>().sprite = imageCandle[1];
@@ -867,6 +915,7 @@ void Start()
             numberCandle[i] = 0;
             buttonCandles[i].GetComponent<Image>().sprite = imageCandle[0];
         }
+        audioSource.PlayOneShot(windStrongSE);
     }
     //炎の間のろうそくのボタンを非アクティブにする
     void DisabledButtonCandles()
@@ -881,6 +930,7 @@ void Start()
     void SaveButtonColor(int color)
     {
         numberColors[numberManage] = color;
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //水の間の謎2のビーカーの水の移動の処理
@@ -895,7 +945,12 @@ void Start()
             }
             else if(beakerSelected[1] == 2) //二つ目に選ばれたビーカーがメモリ3のビーカーの時
             {
-                if(numberBeaker[beakerSelected[0]] +  numberBeaker[beakerSelected[1]] < 4)
+                if(!(numberBeaker[beakerSelected[0]] == 0 || numberBeaker[beakerSelected[1]] == 3))
+                {
+                    audioSource.PlayOneShot(moveBeakerWaterSE);
+                }
+              
+                if (numberBeaker[beakerSelected[0]] +  numberBeaker[beakerSelected[1]] < 4)
                 {
                     numberBeaker[beakerSelected[1]] = numberBeaker[beakerSelected[1]] + numberBeaker[beakerSelected[0]];
                     numberBeaker[beakerSelected[0]] = 0;
@@ -908,6 +963,11 @@ void Start()
             }
             else if (beakerSelected[1] == 1) //二つ目に選ばれたビーカーがメモリ7のビーカーの時
             {
+                if (!(numberBeaker[beakerSelected[0]] == 0 || numberBeaker[beakerSelected[1]] == 7))
+                {
+                    audioSource.PlayOneShot(moveBeakerWaterSE);
+                }
+
                 if (numberBeaker[beakerSelected[0]] + numberBeaker[beakerSelected[1]] < 8)
                 {
                     numberBeaker[beakerSelected[1]] = numberBeaker[beakerSelected[1]] + numberBeaker[beakerSelected[0]];
@@ -921,6 +981,11 @@ void Start()
             }
             else//二つ目に選ばれたビーカーがメモリ10のビーカーの時
             {
+                if (numberBeaker[beakerSelected[0]] != 0)
+                {
+                    audioSource.PlayOneShot(moveBeakerWaterSE);
+                }
+
                 numberBeaker[beakerSelected[1]] = numberBeaker[beakerSelected[1]] + numberBeaker[beakerSelected[0]];
                 numberBeaker[beakerSelected[0]] = 0;
             }
@@ -968,6 +1033,7 @@ void Start()
     {
         numberLine[buttonNo] = (numberLine[buttonNo] + 1) % 2;
         buttonLines[buttonNo].GetComponent<Image>().sprite = imageLine[numberLine[buttonNo]];
+        audioSource.PlayOneShot(changeLightLineSE);
     }
 
     //風の間の謎2の解答の竹の長さの変更の処理
@@ -975,6 +1041,7 @@ void Start()
     {
         numberBumboo[buttonNo] = (numberBumboo[buttonNo] + 1) % numberBumboo.Length;
         buttonBumboos[buttonNo].GetComponent<Image>().sprite = imageBumboos[numberBumboo[buttonNo]];
+        audioSource.PlayOneShot(growBumbooSE);
     }
     //風の間の竹のボタンを非アクティブにする
     void DisabledButtonBumboos()
@@ -991,6 +1058,7 @@ void Start()
         int numberKind = int.Parse(buttonPrison[buttonNo].GetComponentInChildren<Text>().text);
         string numberString = ((numberKind + 1) % 10).ToString("0");
         buttonPrison[buttonNo].GetComponentInChildren<Text>().text = numberString;
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //炎の間の謎1の答えのチェック
@@ -1007,6 +1075,7 @@ void Start()
             if (doesHaveKey == false)
             {
                 DisplayMessage("「カシャ」と音が聞こえて箱が開いた。箱の中には鍵が入っていた。");
+                audioSource.PlayOneShot(openBoxSE);
 
                 DisabledButton1(buttonItem);
                 GameObject.Find("ButtonBoxCloseRed").SetActive(false);
@@ -1059,6 +1128,7 @@ void Start()
                 (numberColors[3] == BLUE) && (numberColors[4] == YELLOW) && (numberColors[5] == GREEN))
             {
                 DisplayMessage("「カシャ」という音が聞こえて箱が空いた。箱の中にはじょうろが入っていた。");
+                audioSource.PlayOneShot(openBoxSE);
 
                 DisabledButton1(buttonItem);
                 GameObject.Find("ButtonBoxCloseBlue").SetActive(false);
@@ -1073,6 +1143,7 @@ void Start()
             else
             {
                 DisplayMissingMessage("「ブブー」という音が聞こえた。何かを間違えたようだ。");
+                audioSource.PlayOneShot(incorrectSE);
             }
         }
     }
@@ -1085,6 +1156,7 @@ void Start()
             if ((numberBeaker[0] == 5) || (numberBeaker[1] == 5))
             {
                 DisplayMessage("目の前が一瞬霧で覆われ、霧が晴れると青色のオーブが現れた。");
+                audioSource.PlayOneShot(fogSE);
 
                 DisabledButton1(buttonItem);
                 DisabledButtonBeakers();
@@ -1111,6 +1183,7 @@ void Start()
                 (numberLine[9] == DARK) && (numberLine[10] == LIGHT) && (numberLine[11] == DARK))
             {
                 DisplayMessage("一瞬光った後、気づいたらマッチ箱が落ちていた。");
+                audioSource.PlayOneShot(voiceLightSE);
 
                 DisabledButton1(buttonItem);
                 DisabledButton1(GameObject.Find("ButtonBackPanelCaveWind4"));
@@ -1130,6 +1203,7 @@ void Start()
             if (doesHaveOrbWind == false)
             {
                 DisplayMessage("突風と共に緑色のオーブが目の前に現れた。");
+                audioSource.PlayOneShot(windStrongSE);
 
                 DisabledButton1(buttonItem);
                 DisabledButtonBumboos();
@@ -1158,7 +1232,9 @@ void Start()
         {
             if (doesSaveBraveMan == false)
             {
-                DisplayMessage("「ガシャ」と音がして牢屋の鍵が開いた。またどこかで「ポチャン」と水がはねる音がした。");
+                DisplayMessage("「ガシャ」と音がして牢屋の鍵が開いた。また、どこかで「ポチャン」と水がはねる音がした。");
+                audioSource.PlayOneShot(openKeySE);
+                audioSource.PlayOneShot(dropPickelInWaterSE);
 
                 GameObject.Find("ImagePrison").GetComponent<Image>().sprite = imagePrisonOpen;
                 GameObject.Find("ImagePrisonRock").SetActive(false);

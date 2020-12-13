@@ -59,6 +59,17 @@ public class Stage2GameManager : GameManagerBase
     //絵：記号
     public Sprite[] symbolPicture = new Sprite[4];
 
+    // 効果音
+    public AudioClip completeSE;                    //効果音：フラグメッセージの出現
+    public AudioClip openBoxSE;                     //効果音：箱が開く
+    public AudioClip openKeySE;                     //効果音：鍵が開く
+    public AudioClip openWoodDoorSE;                //効果音：木のドア開ける
+    public AudioClip closeWoodDoorSE;               //効果音：木のドアを閉める
+    public AudioClip prisonSE;                      //効果音：牢屋ガシャガシャ
+    public AudioClip diggedShovelSE;                //効果音：スコップで魔法陣を掘る
+    public AudioClip mergedKeySE;                   //効果音：鍵を組み合わせる
+    public AudioClip fallItemSE;                    //効果音：鍵が落ちてくる
+
     //記号の種類
     private int[] symbolKind1 = new int[4];
     private int[] symbolKind2 = new int[4];
@@ -90,6 +101,7 @@ public class Stage2GameManager : GameManagerBase
 
         DisabledButton2(ButtonShovelPrison);
         DisabledButton2(ButtonMagicArrayZoom);
+
     }
 
 
@@ -99,6 +111,7 @@ public class Stage2GameManager : GameManagerBase
         wallNow = WALL5;
         ChangeArrowActive(0, ButtonLeft);
         ChangeArrowActive(0, ButtonRight);
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallExtended();
     }
     //机の上の箱を押したらPanelBoxへ
@@ -107,6 +120,7 @@ public class Stage2GameManager : GameManagerBase
         wallNow = WALL6;
         ChangeArrowActive(0, ButtonLeft);
         ChangeArrowActive(0, ButtonRight);
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallExtended();
     }
     //石碑を押したらPanelStornMonumentへ
@@ -115,6 +129,7 @@ public class Stage2GameManager : GameManagerBase
         wallNow = WALL7;
         ChangeArrowActive(0, ButtonLeft);
         ChangeArrowActive(0, ButtonRight);
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallExtended();
     }
     //木の家のドアを押したらPanelInTreeHouseへ
@@ -125,7 +140,9 @@ public class Stage2GameManager : GameManagerBase
             wallNow = WALL8;
             ChangeArrowActive(0, ButtonLeft);
             ChangeArrowActive(0, ButtonRight);
+            audioSource.PlayOneShot(changePanelSE);
             DisplayWallExtended();
+            audioSource.PlayOneShot(openWoodDoorSE);
 
             if (doesOpenHouse == false)
             {
@@ -136,6 +153,7 @@ public class Stage2GameManager : GameManagerBase
         else
         {
             DisplayMessage("ドアには鍵が掛かっている。");
+            audioSource.PlayOneShot(closeWoodDoorSE);
         }
     }
     //牢屋のドアを押したらPanelPrisonRockへ
@@ -144,6 +162,7 @@ public class Stage2GameManager : GameManagerBase
         wallNow = WALL9;
         ChangeArrowActive(0, ButtonLeft);
         ChangeArrowActive(0, ButtonRight);
+        audioSource.PlayOneShot(changePanelSE);
         DisplayWallExtended();
     }
 
@@ -168,15 +187,18 @@ public class Stage2GameManager : GameManagerBase
         if (doesHaveSword == 1)
         {
             DisplayFlagMessage("それは僕の愛剣！見つけてくれてありがとう！");
+            audioSource.PlayOneShot(completeSE);
         }
         else if (doesSaveBraveMan == true)
         {
             DisplayFlagMessage("助けてくれてありがとう！あとは愛剣が見つかれば…。");
+            audioSource.PlayOneShot(completeSE);
         }
         else
         {
             DisplayMessage("変わった服装をしているそこの君！僕をここから出してくれないか？！" +
                            "魔王によって閉じ込められたんだ！");
+            audioSource.PlayOneShot(prisonSE);
         }
 
     }
@@ -201,6 +223,7 @@ public class Stage2GameManager : GameManagerBase
     {
         DisplayMessage("スコップで魔法陣を掘ると………\n" +
                        "剣が埋まっていた！");
+        audioSource.PlayOneShot(diggedShovelSE);
         DisabledButton1(buttonItem);
         DisabledButton2(ButtonMagicArrayZoom);
         ButtonMagicArrayZoom.GetComponent<Image>().sprite = imageMagiArrayDigged;
@@ -214,21 +237,25 @@ public class Stage2GameManager : GameManagerBase
     //パネル1へ戻る
     public void BackPanelWall1()
     {
+        audioSource.PlayOneShot(changePanelSE);
         BackPanelWall(WALL1);
     }
     //パネル2へ戻る
     public void BackPanelWall2()
     {
+        audioSource.PlayOneShot(changePanelSE);
         BackPanelWall(WALL2);
     }
     //パネル3へ戻る
     public void BackPanelWall3()
     {
+        audioSource.PlayOneShot(changePanelSE);
         BackPanelWall(WALL3);
     }
     //パネル4へ戻る
     public void BackPanelWall4()
     {
+        audioSource.PlayOneShot(changePanelSE);
         BackPanelWall(WALL4);
     }
     //パネルWallInTreeHousに戻る
@@ -321,6 +348,7 @@ public class Stage2GameManager : GameManagerBase
         PlayerPrefs.SetInt("STAGECLEAR", 2);
         PlayerPrefs.SetInt("SWORD2", doesHaveSword);
         PlayerPrefs.Save();
+        audioSource.PlayOneShot(saveSE);
         SceneManager.LoadScene("GameScene_stage3");
     }
 
@@ -330,6 +358,7 @@ public class Stage2GameManager : GameManagerBase
         PlayerPrefs.SetInt("STAGECLEAR", 2);
         PlayerPrefs.SetInt("SWORD2", doesHaveSword);
         PlayerPrefs.Save();
+        audioSource.PlayOneShot(saveSE);
         SceneManager.LoadScene("TitleScene");
     }
 
@@ -387,7 +416,8 @@ public class Stage2GameManager : GameManagerBase
     void ChangeButtonSymbol1(int buttonNo)
     {
         symbolKind1[buttonNo] = (symbolKind1[buttonNo] + 1) % symbolKind1.Length;
-        buttonMystery1[buttonNo].GetComponent<Image>().sprite = symbolPicture[symbolKind1[buttonNo]]; 
+        buttonMystery1[buttonNo].GetComponent<Image>().sprite = symbolPicture[symbolKind1[buttonNo]];
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //謎2の解答の記号の変更の処理
@@ -395,6 +425,7 @@ public class Stage2GameManager : GameManagerBase
     {
         symbolKind2[buttonNo] = (symbolKind2[buttonNo] + 1) % symbolKind2.Length;
         buttonMystery2[buttonNo].GetComponent<Image>().sprite = symbolPicture[symbolKind2[buttonNo]];
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //謎3の解答の数字の変更の処理
@@ -403,6 +434,7 @@ public class Stage2GameManager : GameManagerBase
         int numberKind = int.Parse(buttonMystery3[buttonNo].GetComponentInChildren<Text>().text);
         string numberString = ((numberKind + 1) % 10).ToString("0");
         buttonMystery3[buttonNo].GetComponentInChildren<Text>().text = numberString;
+        audioSource.PlayOneShot(changeMysteryObjectSE);
     }
 
     //謎1の答えのチェック
@@ -413,6 +445,7 @@ public class Stage2GameManager : GameManagerBase
             if ((symbolKind[0] == CIRCLE) && (symbolKind[1] == CROSS) && (symbolKind[2] == TRIANGLE) && (symbolKind[3] == SQUARE))
             {
                 DisplayMessage("「カシャ」という音が聞こえて箱が空いた。中には金属のかけらのようなものが入っていた。");
+                audioSource.PlayOneShot(openBoxSE);
 
                 DisabledButton1(buttonItem);
                 DisabledButton1(GameObject.Find("ButtonBackPanelWall2"));
@@ -435,6 +468,7 @@ public class Stage2GameManager : GameManagerBase
             if (doesHaveKeyDown == false)
             {
                 DisplayMessage("空から何か落ちてきた。どうやら金属のかけらのようなものだ。");
+                audioSource.PlayOneShot(fallItemSE);
 
                 DisabledButton1(buttonItem);
                 DisabledButton1(GameObject.Find("ButtonBackPanelWall3"));
@@ -458,6 +492,7 @@ public class Stage2GameManager : GameManagerBase
             if (doesOpenPrison == false)
             {
                 DisplayMessage("「ガシャ」と音がして牢屋の鍵が開いた。");
+                audioSource.PlayOneShot(openKeySE);
                 GameObject.Find("ImagePrison").GetComponent<Image>().sprite = imagePrisonOpen;
                 GameObject.Find("ButtonPrisonRock").SetActive(false);
                 GameObject.Find("ImageBraveManInPrison").SetActive(false);
@@ -476,6 +511,7 @@ public class Stage2GameManager : GameManagerBase
     void MergeKey()
     {
         DisplayMessage("二つの金属片が組み合わさって鍵になった。");
+        audioSource.PlayOneShot(mergedKeySE);
 
         DisabledButton1(ButtonKeyDown);
         DisabledButton1(ButtonKeyUp);
