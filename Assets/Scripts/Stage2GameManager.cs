@@ -339,6 +339,7 @@ public class Stage2GameManager : GameManagerBase
             ImageSelectedItemLarge.GetComponent<Image>().sprite = someItem;
             ImageSelectedItem.SetActive(true);
             ButtonSelectedItemLarge.SetActive(true);
+            audioSource.PlayOneShot(selectItemSE);
         }
     }
 

@@ -55,8 +55,10 @@ public class GameManagerBase : MonoBehaviour
     public AudioClip alertSE;                         //効果音：警告音
     public AudioClip cancelSE;                        //効果音：戻る、キャンセルボタンを押した時
     public AudioClip saveSE;                          //効果音：セーブ時
+    public AudioClip selectItemSE;                    //効果音：アイテム選択
 
-    protected AudioSource audioSource;
+    protected AudioSource audioSource;         //SE音源
+    private AudioSource bgmAudioSource;        //BGM音源
 
     // Start is called before the first frame update
     public void Start()
@@ -69,8 +71,9 @@ public class GameManagerBase : MonoBehaviour
         BackPanelWall(wallNow);
 
         //audioSourceの取得
-        audioSource = gameObject.GetComponent<AudioSource>();
-        
+        audioSource = gameObject.AddComponent<AudioSource>();
+        bgmAudioSource = gameObject.GetComponent<AudioSource>();
+
     }
 
     //左矢印を押したときの処理

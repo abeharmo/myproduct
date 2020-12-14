@@ -86,6 +86,7 @@ public class Stage3GameManager : GameManagerBase
     public AudioClip openBoxSE;                     //効果音：箱が開く
     public AudioClip openKeySE;                     //効果音：鍵が開く
     public AudioClip openDoorSE;                    //効果音；壁が開く
+    public AudioClip flipPageSE;                    //効果音；本をめくる
     public AudioClip breakWallSE;                   //効果音：壁の破壊
     public AudioClip prisonSE;                      //効果音：牢屋ガシャガシャ
 
@@ -329,6 +330,7 @@ void Start()
         if(numberHint < 4)
         {
             ImageSelectedBook.GetComponent<Image>().sprite = imageHint[numberHint];
+            audioSource.PlayOneShot(flipPageSE);
         }
         else
         {
@@ -351,6 +353,7 @@ void Start()
         ImageSelectedItemLarge.GetComponent<Image>().sprite = someItem;
         ImageSelectedItem.SetActive(true);
         ButtonSelectedItemLarge.SetActive(true);
+        audioSource.PlayOneShot(selectItemSE);
     }
 
     //次のステージへのボタン

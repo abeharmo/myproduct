@@ -6634,6 +6634,7 @@ MonoBehaviour:
   alertSE: {fileID: 8300000, guid: e093a561c0b917f4fb45a2df0aebcde5, type: 3}
   cancelSE: {fileID: 8300000, guid: d2006697ceeed5f4789fa877d1f9c53f, type: 3}
   saveSE: {fileID: 8300000, guid: 1ca502ae1a24433439c999c0e7e196eb, type: 3}
+  selectItemSE: {fileID: 0}
   ButtonKeyUpIcon: {fileID: 774058114}
   ButtonKeyDownIcon: {fileID: 1936823240}
   ButtonKeyIcon: {fileID: 671250484}
@@ -6679,7 +6680,7 @@ MonoBehaviour:
   closeWoodDoorSE: {fileID: 8300000, guid: 74ba46b40c30ab340af2b8cc51c2037a, type: 3}
   prisonSE: {fileID: 8300000, guid: b55c66c4d3d3ec7438c8fcfb429000d5, type: 3}
   diggedShovelSE: {fileID: 8300000, guid: 0a82d46726560b144a0edbda49cd66e6, type: 3}
-  mergedKey: {fileID: 8300000, guid: 718902a88dfa9e24580bf4770830a21e, type: 3}
+  mergedKeySE: {fileID: 8300000, guid: 718902a88dfa9e24580bf4770830a21e, type: 3}
   fallItemSE: {fileID: 8300000, guid: 4fab3b5d489aa4d41a438c6fa91fa475, type: 3}
 --- !u!4 &1114936042
 Transform:
@@ -6706,10 +6707,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -10,8 +10,8 @@ public class EndingManager : MonoBehaviour
     public GameObject buttonMessage;             //ボタン：メッセージ
     public GameObject buttonMessageText;         //ボタン：テキスト
 
-    public GameObject buttonEnd;
-    public GameObject buttonEndText;
+    public GameObject buttonEnd;                 //ボタン：エンドの種類
+    public GameObject buttonEndText;             //ボタン；エンドの内容
 
     private int Sword1;
     private int Sword2;
@@ -21,16 +21,29 @@ public class EndingManager : MonoBehaviour
     public GameObject imageBraveManBlue;         //水の勇者
     public GameObject imageBraveManGreen;        //風の勇者
 
-    public Sprite imageBraveManRedS;          //炎の勇者
-    public Sprite imageBraveManBlueS;         //水の勇者
-    public Sprite imageBraveManGreenS;        //風の勇者
+    public Sprite imageBraveManRedS;             //画像：炎の勇者
+    public Sprite imageBraveManBlueS;            //画像：水の勇者
+    public Sprite imageBraveManGreenS;           //画像：風の勇者
+
+    public AudioClip messageSE;                  //効果音：メッセージ表示
+    public AudioClip evilLaughSE;                //効果音：魔王の笑い声
+    public AudioClip badEndSE;                   //効果音：バッドエンド
+    public AudioClip normalEndSE;                //効果音：ノーマルエンド
+    public AudioClip trueEndSE;                  //効果音：真エンド
 
 
-    private int countText;
+    private int countText;                       //テキストを表示した回数のカウント
+    private AudioSource audioSource;             //SE音源
+    private AudioSource bgmAudioSource;          //BGM音源
 
     // Start is called before the first frame update
     void Start()
     {
+        //audioSourceの取得
+        audioSource = gameObject.AddComponent<AudioSource>();
+        bgmAudioSource = gameObject.GetComponent<AudioSource>();
+
+        //各勇者の剣の取得状態
         Sword1 = PlayerPrefs.GetInt("SWORD1");
         Sword2 = PlayerPrefs.GetInt("SWORD2");
         Sword3 = PlayerPrefs.GetInt("SWORD3");
@@ -40,17 +53,12 @@ public class EndingManager : MonoBehaviour
         Ending();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     //メッセージウィンドウの表示
     public void DisplayMessage(string message)
     {
         buttonMessageText.GetComponent<Text>().text = message;
+        audioSource.PlayOneShot(messageSE);
     }
 
     //メッセージウィンドウを押すと
@@ -66,6 +74,13 @@ public class EndingManager : MonoBehaviour
         buttonEndText.GetComponent<Text>().text = message;
     }
 
+    //エンディングからタイトルに戻る
+    public void PushButtonEnd()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
+
+    //勇者が剣を回収しているか
     void BraveMans(int Sword1, int Sword2, int Sword3)
     {
         if (Sword1 == 1)
@@ -82,6 +97,7 @@ public class EndingManager : MonoBehaviour
         }
     }
 
+    //勇者が剣を持っているかによるエンディングの変化
     public void Ending()
     {
         if (Sword1 == 1 && Sword2 == 1 && Sword3 == 1)
@@ -122,7 +138,10 @@ public class EndingManager : MonoBehaviour
                 break;
             case 5:
                 buttonMessage.SetActive(false);
+                buttonEnd.SetActive(true);
                 DisplayEnd("Bad End");
+                bgmAudioSource.Pause();
+                audioSource.PlayOneShot(badEndSE);
                 break;
             default:
                 UnityEngine.Debug.Log("End1 Error");
@@ -147,13 +166,17 @@ public class EndingManager : MonoBehaviour
                 break;
             case 3:
                 DisplayMessage("「く、今回は見逃してやる。さらばだ！」");
+                GameObject.Find("ImageEvil").SetActive(false);
                 break;
             case 4:
                 DisplayMessage("魔王を撃退した！");
                 break;
             case 5:
                 buttonMessage.SetActive(false);
+                buttonEnd.SetActive(true);
                 DisplayEnd("End");
+                bgmAudioSource.Pause();
+                audioSource.PlayOneShot(normalEndSE);
                 break;
             default:
                 UnityEngine.Debug.Log("End2 Error");
@@ -178,6 +201,7 @@ public class EndingManager : MonoBehaviour
                 break;
             case 3:
                 DisplayMessage("「く、ここまでのようだな。ぐわーーーーー。」");
+                GameObject.Find("ImageEvil").SetActive(false);
                 break;
             case 4:
                 DisplayMessage("魔王を討伐した！！");
@@ -186,6 +210,8 @@ public class EndingManager : MonoBehaviour
                 buttonMessage.SetActive(false);
                 buttonEnd.SetActive(true);
                 DisplayEnd("True End");
+                bgmAudioSource.Pause();
+                audioSource.PlayOneShot(trueEndSE);
                 break;
             default:
                 UnityEngine.Debug.Log("End3 Error");

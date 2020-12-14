@@ -11781,9 +11781,13 @@ MonoBehaviour:
   imageIcon: {fileID: 21300000, guid: 6e4f6f5ce0e28d748b6a382fc305e4c1, type: 3}
   changePanelSE: {fileID: 8300000, guid: 37754b33200ff9840b5511a85e7dc614, type: 3}
   itemButtonSE: {fileID: 8300000, guid: 5d773fcdc759fcf4db4181d30e52738a, type: 3}
+  changeMysteryObjectSE: {fileID: 8300000, guid: 1e622ed015d0d284aaa76d0868c1d014,
+    type: 3}
   messageSE: {fileID: 8300000, guid: 713a712743090504fb344a1a2c090e62, type: 3}
   alertSE: {fileID: 8300000, guid: e093a561c0b917f4fb45a2df0aebcde5, type: 3}
   cancelSE: {fileID: 8300000, guid: d2006697ceeed5f4789fa877d1f9c53f, type: 3}
+  saveSE: {fileID: 0}
+  selectItemSE: {fileID: 0}
   ButtonBookIcon: {fileID: 1854336519}
   ButtonBallsIcon: {fileID: 243673957}
   ButtonHint1Icon: {fileID: 1343606455}
@@ -11946,15 +11950,24 @@ MonoBehaviour:
   burnBookSE: {fileID: 8300000, guid: 0bd4b59edff73c949afb79dd8efecad2, type: 3}
   incorrectSE: {fileID: 8300000, guid: 326e5f099a4d0774d8096a893e34eb68, type: 3}
   openKeySE: {fileID: 8300000, guid: d81a7fd379c902c44b8d41e6e8c7c151, type: 3}
+  openDoorSE: {fileID: 8300000, guid: 95fd236c565daa446813950a5dff77d2, type: 3}
   magicWindSE: {fileID: 8300000, guid: fb080ea62ea1d604bbeb11a8fb7e7515, type: 3}
   onFireSE: {fileID: 8300000, guid: 4c6ff7b7fa7411244bf98b36d10cc95d, type: 3}
-  offFireSE: {fileID: 8300000, guid: e62b369542b85dc498c208e142120360, type: 3}
   moveBeakerWaterSE: {fileID: 8300000, guid: 45c63954a8746cc4680ff903994c862f, type: 3}
   prisonSE: {fileID: 8300000, guid: b55c66c4d3d3ec7438c8fcfb429000d5, type: 3}
   breakStageSE: {fileID: 8300000, guid: 06b96e363ad91ac41b5908e8b1acc4f0, type: 3}
   switchSE: {fileID: 8300000, guid: 727155f860805024895e56897ca378f1, type: 3}
   dropBallInWaterSE: {fileID: 8300000, guid: d91ebb886e5049a41a44cd1d1cfd2365, type: 3}
   dropPickelInWaterSE: {fileID: 8300000, guid: 28ed79596952fcc4bb5b70f54170e446, type: 3}
+  changeLightLineSE: {fileID: 8300000, guid: 6712dff7add6ff249a14e3b3641f5cdb, type: 3}
+  openBoxSE: {fileID: 8300000, guid: 3840cc1a8b0ed5e43bc116b22fb66665, type: 3}
+  wateringSE: {fileID: 8300000, guid: 71127b89e8630894a9e61cb7941e4458, type: 3}
+  growBumbooSE: {fileID: 8300000, guid: 1ac7289ce6fc3ac42bf068709d64384c, type: 3}
+  setOrbSE: {fileID: 8300000, guid: c9ff48d497c513d4f930b440a91c44aa, type: 3}
+  voiceLightSE: {fileID: 8300000, guid: f3a9f5eeb1eb9ba4ea2369435bdd6c23, type: 3}
+  windStrongSE: {fileID: 8300000, guid: 68ef1d34fcf0c2d48a2ac32054d4554b, type: 3}
+  fogSE: {fileID: 8300000, guid: 84587407123dec04988610499f68e13d, type: 3}
+  completeSE: {fileID: 8300000, guid: 4a903c5bca3f16947b6d2d4d430be58d, type: 3}
 --- !u!82 &899446849
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11965,11 +11978,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: b6dd6df425898ec4ab3d2e4c8b382039, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

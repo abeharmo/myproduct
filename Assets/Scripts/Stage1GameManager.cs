@@ -699,6 +699,7 @@ void Start()
         ImageSelectedItemLarge.GetComponent<Image>().sprite = someItem;
         ImageSelectedItem.SetActive(true);
         ButtonSelectedItemLarge.SetActive(true);
+        audioSource.PlayOneShot(selectItemSE);
     }
 
     //次のステージへのボタン

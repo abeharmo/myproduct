@@ -10,26 +10,30 @@ public class OpeningManager : MonoBehaviour
     public GameObject buttonMessage;           //ボタン：メッセージ
     public GameObject buttonMessageText;       //ボタン：テキスト
 
-    private int countText;
+    public AudioClip messageSE;                //効果音：メッセージ表示
 
-    // Start is called before the first frame update
+    private int countText;
+    private AudioSource audioSource;           //SE音源
+    private AudioSource bgmAudioSource;        //BGM音源
+
+
     void Start()
     {
+        //audioSourceの取得
+        audioSource = gameObject.AddComponent<AudioSource>();
+        bgmAudioSource = gameObject.GetComponent<AudioSource>();
+
         countText = 0;
         buttonMessage.SetActive(true);
         PushButtonMessage();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     //メッセージウィンドウの表示
     public void DisplayMessage(string message)
     {
         buttonMessageText.GetComponent<Text>().text = message;
+        audioSource.PlayOneShot(messageSE);
     }
 
     //メッセージウィンドウを押すと

@@ -14874,6 +14874,7 @@ MonoBehaviour:
   alertSE: {fileID: 8300000, guid: e093a561c0b917f4fb45a2df0aebcde5, type: 3}
   cancelSE: {fileID: 8300000, guid: d2006697ceeed5f4789fa877d1f9c53f, type: 3}
   saveSE: {fileID: 8300000, guid: 1ca502ae1a24433439c999c0e7e196eb, type: 3}
+  selectItemSE: {fileID: 0}
   ButtonHintIcon: {fileID: 1090446789}
   ButtonBookIcon: {fileID: 1932722089}
   ButtonHammerIcon: {fileID: 896918181}
@@ -14950,6 +14951,7 @@ MonoBehaviour:
   openBoxSE: {fileID: 8300000, guid: 3840cc1a8b0ed5e43bc116b22fb66665, type: 3}
   openKeySE: {fileID: 8300000, guid: d81a7fd379c902c44b8d41e6e8c7c151, type: 3}
   openDoorSE: {fileID: 8300000, guid: 95fd236c565daa446813950a5dff77d2, type: 3}
+  flipPageSE: {fileID: 8300000, guid: 79338e2198d01934a9f39aacfd533645, type: 3}
   breakWallSE: {fileID: 8300000, guid: 06b96e363ad91ac41b5908e8b1acc4f0, type: 3}
   prisonSE: {fileID: 8300000, guid: b55c66c4d3d3ec7438c8fcfb429000d5, type: 3}
 --- !u!4 &1879659551
@@ -14976,11 +14978,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: fe22c5c662dfa7442b43d6b75e185893, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
