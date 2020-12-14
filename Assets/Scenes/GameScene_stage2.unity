@@ -6634,7 +6634,7 @@ MonoBehaviour:
   alertSE: {fileID: 8300000, guid: e093a561c0b917f4fb45a2df0aebcde5, type: 3}
   cancelSE: {fileID: 8300000, guid: d2006697ceeed5f4789fa877d1f9c53f, type: 3}
   saveSE: {fileID: 8300000, guid: 1ca502ae1a24433439c999c0e7e196eb, type: 3}
-  selectItemSE: {fileID: 0}
+  selectItemSE: {fileID: 8300000, guid: 7e2ae5650f2ae3a4db9f11ea885da62f, type: 3}
   ButtonKeyUpIcon: {fileID: 774058114}
   ButtonKeyDownIcon: {fileID: 1936823240}
   ButtonKeyIcon: {fileID: 671250484}
@@ -6706,7 +6706,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a378a6f7059c0354caaaf5c3acedd525, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1

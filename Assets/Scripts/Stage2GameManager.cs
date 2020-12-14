@@ -209,6 +209,7 @@ public class Stage2GameManager : GameManagerBase
     {
         DisplayMessage("木のスコップを入手した。");
         DisabledButton1(buttonItem);
+        DisabledButton1(GameObject.Find("ButtonBackPanelWall4"));
         ButtonShovelPrison.SetActive(false);
         GameObject.Find("ImageShovel").SetActive(false);
 
@@ -313,10 +314,11 @@ public class Stage2GameManager : GameManagerBase
     public void PushButtonShovelIcon()
     {
         ButtonShovelIcon.SetActive(false);
+        EnabledButton1(GameObject.Find("ButtonBackPanelWall4"));
         EnabledButton1(buttonItem);
     }
 
-    //スコップのアイコンを消す処理
+    //県のアイコンを消す処理
     public void PushButtonSwordIcon()
     {
         ButtonSwordIcon.SetActive(false);

@@ -11786,8 +11786,8 @@ MonoBehaviour:
   messageSE: {fileID: 8300000, guid: 713a712743090504fb344a1a2c090e62, type: 3}
   alertSE: {fileID: 8300000, guid: e093a561c0b917f4fb45a2df0aebcde5, type: 3}
   cancelSE: {fileID: 8300000, guid: d2006697ceeed5f4789fa877d1f9c53f, type: 3}
-  saveSE: {fileID: 0}
-  selectItemSE: {fileID: 0}
+  saveSE: {fileID: 8300000, guid: 1ca502ae1a24433439c999c0e7e196eb, type: 3}
+  selectItemSE: {fileID: 8300000, guid: 7e2ae5650f2ae3a4db9f11ea885da62f, type: 3}
   ButtonBookIcon: {fileID: 1854336519}
   ButtonBallsIcon: {fileID: 243673957}
   ButtonHint1Icon: {fileID: 1343606455}
