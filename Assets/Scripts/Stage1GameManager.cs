@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Diagnostics;
+using System;
 
 public class Stage1GameManager : GameManagerBase
 {
@@ -106,6 +107,7 @@ public class Stage1GameManager : GameManagerBase
     //イラスト（パネル内の背景等）
     public Sprite imageValutOpen;           //画像：開いている金庫
     public Sprite imagePrisonOpen;          //画像；開いている牢屋
+    public Sprite imageSwitchPushed;        //画像：押されているボタン
     
     //イラスト：オーブ
     public GameObject imageOrbWind;             //画像：風のオーブ
@@ -119,15 +121,19 @@ public class Stage1GameManager : GameManagerBase
     public GameObject Candles;             //ろうそく
 
     //ボタン：謎に使われているオブジェクト
-    public GameObject[] buttonNumbers = new GameObject[6];    //赤い箱の数字
-    public GameObject[] buttonColors  = new GameObject[6];    //青い箱の色つきボタン
-    public GameObject[] buttonLines   = new GameObject[12];   //石碑の線
-    public GameObject[] buttonCandles = new GameObject[6];    //ろうそく
-    public GameObject[] buttonBumboos = new GameObject[6];    //竹
-    public GameObject[] buttonBeakers = new GameObject[3];    //ビーカー
-    public GameObject[] buttonPrison  = new GameObject[18];   //牢屋の鍵
+
+    public GameObject[] buttonSelectedColor = new GameObject[6];    //炎の間の謎1の押されれたボタンの色
+    public GameObject[] buttonNumbers       = new GameObject[6];    //赤い箱の数字
+    public GameObject[] buttonColors        = new GameObject[6];    //青い箱の色つきボタン
+    public GameObject[] buttonLines         = new GameObject[12];   //石碑の線
+    public GameObject[] buttonCandles       = new GameObject[6];    //ろうそく
+    public GameObject[] buttonBumboos       = new GameObject[6];    //竹
+    public GameObject[] buttonBeakers       = new GameObject[3];    //ビーカー
+    public GameObject[] buttonPrison        = new GameObject[18];   //牢屋の鍵
     //ビーカーが選択されているとき
     public GameObject[] imageBeakerSelected = new GameObject[3];
+    //部屋のあるビーカーの絵
+    public GameObject[] imageBeakers = new GameObject[3];
 
     //イラストの種類
     public Sprite[] imageLine     = new Sprite[2];
@@ -146,6 +152,9 @@ public class Stage1GameManager : GameManagerBase
 
     //水の間の謎1のボタンを押した回数の管理
     private int numberManage;
+    //ボタンの色の値：赤 緑 青 黄 紫 水
+    private string[] colorButton = { "#FF3223", "#00FF11", "#0000FF", "#FFFF23", "#CC00FF", "#00FFFF", "#FFFFFF"};
+
     //水の間の謎2
     private int[] beakerSelected = new int[2];      //選択したビーカーの管理
     private int beakerManage;                       //ビーカーの選んだ順番
@@ -229,7 +238,6 @@ void Start()
 
         DisabledButton2(ButtonBurnFire);
         DisabledButton2(ButtonLake);
-
     }
 
     //ボタンを押されたらメッセージウィンドウを消す
@@ -244,7 +252,6 @@ void Start()
     {
         buttonFlagMessage.SetActive(true);
         buttonFlagMessageText.GetComponent<Text>().text = message;
-
     }
 
     //謎が解けなかったときのメッセージウィンドウを消す
@@ -269,7 +276,7 @@ void Start()
             DisplayFlagMessage("剣まで見つけてくれたのか！君はとてもいい人だな。本当に感謝するよ！");
             audioSource.PlayOneShot(completeSE);
         }
-        else if (doesSaveBraveMan == true)
+        else if (doesSaveBraveMan)
         {
             DisplayFlagMessage("助かったよ！どこかに持っていかれた剣も探さねば。");
             audioSource.PlayOneShot(completeSE);
@@ -283,8 +290,8 @@ void Start()
 
     }
 
-    //赤い時計を押したら
-    public void PushButtonClockRed()
+    //青い時計を押したら
+    public void PushButtonClockBlue()
     {
         DisplayMessage("22時10分30秒を指している。");
     }
@@ -395,10 +402,24 @@ void Start()
         }
         else
         { 
-            DisplayMessage("魔法陣の上に手をかざすと風を感じる。どうやら風を起こすための魔法陣のようだ。");
+            if(doesFlyAsh && doesFlyBallsColor)
+            {
+                DisplayMessage("魔法陣の風で灰とボールが浮かんでいる。");
+            }
+            else if (doesFlyAsh)
+            {
+                DisplayMessage("魔法陣の風で灰が浮かんでいる。");
+            }
+            else if (doesFlyBallsColor)
+            {
+                DisplayMessage("魔法陣の風でボールが浮かんでいる。");
+            }
+            else
+            {
+                DisplayMessage("魔法陣の上に手をかざすと風を感じる。どうやら風を起こすための魔法陣のようだ。");
+            }
             audioSource.PlayOneShot(magicWindSE);
         }
-
     }
 
     //金庫の鍵を押したら
@@ -411,7 +432,6 @@ void Start()
             GameObject.Find("PanelValut").GetComponent<Image>().sprite = imageValutOpen;
             GameObject.Find("ButtonKeyHole").SetActive(false);
             ButtonKey.SetActive(false);
-
             ButtonSwitch.SetActive(true);
         }
         else
@@ -426,6 +446,7 @@ void Start()
         DisplayMessage("どこかの台から何か出たようだ。");
         audioSource.PlayOneShot(switchSE);
         DisabledButton2(ButtonSwitch);
+        GameObject.Find("ButtonSwitch").GetComponent<Image>().sprite = imageSwitchPushed;
 
         Beakers.SetActive(true);
         Candles.SetActive(true);
@@ -849,13 +870,16 @@ void Start()
                 }
             }
         }
+        else
+        {
+            DisplayMessage("ろうそくだ、火を付けられそうだ。");
+        }
     }
 
     //水の間の謎1の入力の処理
     public void PushButtonWM1(int i)
     {
         SaveButtonColor(i);
-        numberManage++;
         if (numberManage == 6)
         {
             CheckWaterMystery1Answer();
@@ -930,8 +954,26 @@ void Start()
     //水の間の謎1の解答の保存の処理
     void SaveButtonColor(int color)
     {
+        Color newColor;
+        if (numberManage == 6)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (ColorUtility.TryParseHtmlString(colorButton[numberManage], out newColor))
+                {
+                    buttonSelectedColor[i].GetComponent<Image>().color = newColor;
+                }
+            }
+            numberManage = 0;
+        }
+        
         numberColors[numberManage] = color;
+        if (ColorUtility.TryParseHtmlString(colorButton[color], out newColor))
+        {
+            buttonSelectedColor[numberManage].GetComponent<Image>().color = newColor;
+        }
         audioSource.PlayOneShot(changeMysteryObjectSE);
+        numberManage++;
     }
 
     //水の間の謎2のビーカーの水の移動の処理
@@ -1000,6 +1042,9 @@ void Start()
             buttonBeakers[0].GetComponent<Image>().sprite = imageBeaker10[numberBeaker[0]];
             buttonBeakers[1].GetComponent<Image>().sprite = imageBeaker7[numberBeaker[1]];
             buttonBeakers[2].GetComponent<Image>().sprite = imageBeaker3[numberBeaker[2]];
+            imageBeakers[0].GetComponent<Image>().sprite = imageBeaker10[numberBeaker[0]];
+            imageBeakers[1].GetComponent<Image>().sprite = imageBeaker7[numberBeaker[1]];
+            imageBeakers[2].GetComponent<Image>().sprite = imageBeaker3[numberBeaker[2]];
 
         }
         else
@@ -1073,7 +1118,7 @@ void Start()
 
         if ((number[0] == 4) && (number[1] == 2) && (number[2] == 6) && (number[3] == 1) && (number[4] == 9) && (number[5] == 1))
         {
-            if (doesHaveKey == false)
+            if (!(doesHaveKey))
             {
                 DisplayMessage("「カシャ」と音が聞こえて箱が開いた。箱の中には鍵が入っていた。");
                 audioSource.PlayOneShot(openBoxSE);
@@ -1093,7 +1138,7 @@ void Start()
     //火の間の謎2の答えのチェック
     void CheckFireMystery2Answer()
     {
-        if (doesHaveOrbFire == false)
+        if (!(doesHaveOrbFire))
         {
             candleManage = 0;
             if ((orderManage[0] == 4) && (orderManage[1] == 3) && (orderManage[2] == 1) &&
@@ -1122,8 +1167,7 @@ void Start()
     //水の間の謎1の答えのチェック
     void CheckWaterMystery1Answer()
     {
-        numberManage = 0;
-        if (doesHaveWateringCan == false)
+        if (!(doesHaveWateringCan))
         {
             if ((numberColors[0] == LIGHTBLUE) && (numberColors[1] == RED) && (numberColors[2] == PURPLE) &&
                 (numberColors[3] == BLUE) && (numberColors[4] == YELLOW) && (numberColors[5] == GREEN))
@@ -1152,7 +1196,7 @@ void Start()
     //水の間の謎2の答えのチェック
     void CheckWaterMystery2Answer()
     {
-        if (doesHaveOrbWater == false)
+        if (!(doesHaveOrbWater))
         {
             if ((numberBeaker[0] == 5) || (numberBeaker[1] == 5))
             {
@@ -1176,7 +1220,7 @@ void Start()
     //風の間の謎1の答えのチェック
     void CheckWindMystery1Answer()
     {
-        if (doesHaveMatch == false)
+        if (!(doesHaveMatch))
         {
             if ((numberLine[0] == LIGHT) && (numberLine[1] == DARK) && (numberLine[2] == LIGHT) &&
                 (numberLine[3] == DARK) && (numberLine[4] == LIGHT) && (numberLine[5] == DARK) &&
@@ -1201,7 +1245,7 @@ void Start()
         if ((numberBumboo[0] == 5) && (numberBumboo[1] == 2) && (numberBumboo[2] == 4) && (numberBumboo[3] == 0) &&
              (numberBumboo[4] == 3) && (numberBumboo[5] == 1))
         {
-            if (doesHaveOrbWind == false)
+            if (!(doesHaveOrbWind))
             {
                 DisplayMessage("突風と共に緑色のオーブが目の前に現れた。");
                 audioSource.PlayOneShot(windStrongSE);
@@ -1227,11 +1271,11 @@ void Start()
             number[i] = int.Parse(buttonPrison[i].GetComponentInChildren<Text>().text);
         }
 
-        if ((number[0] == 2) && (number[1] == 2) && (number[2] == 1) && (number[3] == 0) && (number[4] == 3) && (number[5] == 0) &&
+        if ((number[0] == 1) && (number[1] == 6) && (number[2] == 4) && (number[3] == 2) && (number[4] == 5) && (number[5] == 3) &&
             (number[6] == 1) && (number[7] == 8) && (number[8] == 4) && (number[9] == 9) && (number[10] == 2) && (number[11] == 7) &&
-            (number[12] == 1) && (number[13] == 6) && (number[14] == 4) && (number[15] == 2) && (number[16] == 5) && (number[17] == 3))
+            (number[12] == 2) && (number[13] == 2) && (number[14] == 1) && (number[15] == 0) && (number[16] == 3) && (number[17] == 0))
         {
-            if (doesSaveBraveMan == false)
+            if (!(doesSaveBraveMan))
             {
                 DisplayMessage("「ガシャ」と音がして牢屋の鍵が開いた。また、どこかで「ポチャン」と水がはねる音がした。");
                 audioSource.PlayOneShot(openKeySE);
